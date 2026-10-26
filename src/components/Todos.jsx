@@ -1,11 +1,24 @@
 import { useState } from "react";
 
+const selectedClass = 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+const notSelectedClass = 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+
 function Todos() {
   const [text, setText] = useState("");
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState('all')
 
   const activeTodos = todos.filter((todo) => !todo.completed);
   const activeCount = activeTodos.length;
+  const visibleTodos = todos.filter((todo) => {
+    if (filter === 'active') {
+      return !todo.completed
+    }
+    if (filter === 'completed') {
+      return todo.completed
+    }
+    return true
+  })
 
   function handleClearCompleted() {
     setTodos(todos.filter((todo) => !todo.completed));
@@ -78,7 +91,7 @@ function Todos() {
               </label>
 
               <ul>
-                {todos.map((todo) => (
+                {visibleTodos.map((todo) => (
                   <li
                     key={todo.id}
                     className="group relative flex items-center border-b border-[#ededed] text-2xl"
@@ -119,7 +132,8 @@ function Todos() {
                 <li>
                   <button
                     type="button"
-                    className="cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]"
+                    className={filter === 'all' ? selectedClass : notSelectedClass}
+                    onClick={() => setFilter('all')}
                   >
                     All
                   </button>
@@ -127,7 +141,8 @@ function Todos() {
                 <li>
                   <button
                     type="button"
-                    className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                    className={filter === 'active' ? selectedClass : notSelectedClass}
+                    onClick={() => setFilter('active')}
                   >
                     Active
                   </button>
@@ -135,7 +150,8 @@ function Todos() {
                 <li>
                   <button
                     type="button"
-                    className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                    className={filter === 'completed' ? selectedClass : notSelectedClass}
+                    onClick={() => setFilter('completed')}
                   >
                     Completed
                   </button>
