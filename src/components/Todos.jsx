@@ -6,6 +6,10 @@ function Todos() {
 
   const activeTodos = todos.filter((todo) => !todo.completed);
 
+  function handleClearCompleted() {
+    setTodos(todos.filter((todo) => !todo.completed));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     const trimmed = text.trim();
@@ -124,12 +128,17 @@ function Todos() {
                   </button>
                 </li>
               </ul>
-              <button
-                type="button"
-                className="cursor-pointer justify-self-end hover:underline"
-              >
-                Clear completed
-              </button>
+              {todos.some((todo) => todo.completed) && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleClearCompleted}
+                    className="cursor-pointer justify-self-end hover:underline"
+                  >
+                    Clear completed
+                  </button>
+                  </>
+              )}
             </footer>
           </>
         )}
